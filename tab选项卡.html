@@ -1,0 +1,122 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>JsTab选项卡插件</title>
+<style type="text/css">
+#beian {
+	text-align: center;
+	float: left;
+	width: 100%;
+	margin-top: 50px
+}
+#beian a {
+	color: gray;
+	font: 13px "微软雅黑", Arial, Helvetica, sans-serif;
+}
+#Main {
+	width: 600px;
+	height: 400px;
+	margin: 0 auto;
+	margin-top: 50px;
+}
+#Main>div {
+	text-align: center;
+}
+</style>
+</head>
+
+<body>
+<div id="Main">
+	<div id="item1">我是选项1的内容</div>
+	<div id="item2">我是选项2的内容</div>
+	<div id="item3">我是选项3的内容</div>
+	<div id="item4">我是选项4的内容</div>
+	<div id="item5">我是选项5的内容</div>
+</div>
+
+</body>
+<script type="text/javascript">
+		window.onload = function() {
+			//指定父级对象
+			TabPlug.Parent = document.getElementById("Main");
+			//选项卡名称数组
+			TabPlug.Tabs = ["选项卡1", "选项卡2", "选项卡3", "选项卡4", "选项卡5"];
+			//选项卡对应的内容容器id
+			TabPlug.Context=["item1", "item2", "item3", "item4", "item5"];
+			//初始化
+			TabPlug.Initialize();
+		}
+		/***
+		author:pengyaou
+		JavascriptTab选项卡插件
+		使用时Context和Tabs的数目必须一致
+		***/
+		var TabPlug = {
+			Width: "600",
+			Height: "400",
+			Parent: null,
+			Context:["item1"],
+			Tabs: ["选项卡1"],
+			Initialize: function() {
+				var tagContainer;
+				var MainBody;
+				for (var i = 0; i < this.Tabs.length; i++) {
+					if (tagContainer == null) {
+						tagContainer = document.createElement("div");
+						tagContainer.style.position = "absolute";
+						tagContainer.height="30px";
+						tagContainer.style.marginTop = - 30 + "px";
+						this.Parent.appendChild(tagContainer);
+					}
+					if (MainBody == null) {
+						MainBody = document.createElement("div");
+						MainBody.style.width = this.Width + "px";
+						MainBody.style.height = this.Height + "px";
+						MainBody.style.border = "1px solid #ccc";
+						MainBody.style.marginTop = "50px";
+						this.Parent.appendChild(MainBody);
+					}
+
+					var tagBody = document.getElementById(this.Context[i]);
+					tagBody.style.display="none";
+					MainBody.appendChild(tagBody);
+
+					
+					var childItem = document.createElement("div");
+					childItem.className = "childItem";
+					childItem.style.height="19px";
+					childItem.style.padding = "5px 20px 5px 20px";
+					childItem.style.border = "1px solid #ccc";
+					childItem.style.fontFamily = "微软雅黑";
+					childItem.style.fontSize = "13px";
+					childItem.style.float = "left";
+					childItem.id = i;
+					childItem.style.cursor = "pointer";
+					childItem.style.marginLeft = i == 0 ? "0px" : "-1px";
+					childItem.style.backgroundColor = "#efefef";
+					childItem.innerHTML = this.Tabs[i];
+					tagContainer.appendChild(childItem);
+					childItem.onclick = function() {
+					TabPlug.Select(this.id);
+					}
+				}
+				TabPlug.Select(0);
+			},
+			Select: function(a) {
+				for (var i = 0; i < TabPlug.Tabs.length; i++) {
+					document.getElementById(this.Context[i]).style.display = "none";
+					document.getElementById(i).style.backgroundColor = "#f2f2f2";
+					document.getElementById(i).style.marginTop = "0px";
+					document.getElementById(i).style.paddingBottom = "5px";
+					document.getElementById(i).style.borderBottom = "1px solid #ccc";
+				}
+				document.getElementById(this.Context[a]).style.display = "block";
+				document.getElementById(a).style.backgroundColor = "#fff";
+				document.getElementById(a).style.paddingBottom = "8px";
+				document.getElementById(a).style.marginTop = "-1px";
+				document.getElementById(a).style.borderBottom = "1px solid #fff";
+			}
+		}
+	</script>
+</html>
